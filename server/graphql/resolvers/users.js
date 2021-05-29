@@ -69,7 +69,7 @@ module.exports = {
           where: { username },
         })
 
-
+    
         if (!user) {
           errors.username = 'user not found'
           throw new UserInputError('user not found', { errors })
@@ -82,7 +82,7 @@ module.exports = {
           throw new UserInputError('password is incorrect', { errors })
         }
 
-        const token = jwt.sign({ username }, process.env.JWT_SECRET,{
+        const token = jwt.sign({ username:username.toLowerCase() }, process.env.JWT_SECRET,{
           expiresIn: 60 * 60,
         })
 

@@ -7,7 +7,7 @@ import ReactEmoji from 'react-emoji';
 import { useAuthState } from '../../context/auth'
 import { gql, useMutation } from '@apollo/client'
 
-const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎']
+const reactions = ['<3', ':joy:', ':o', ':cry:', ':rage:', ':thumbsup:', ':thumbsdown:']
 
 const REACT_TO_MESSAGE = gql`
   mutation reactToMessage($uuid: String!, $content: String!) {
@@ -22,7 +22,7 @@ export default function Message({ message }) {
   const sent = message.from === user.username
   const received = !sent
   const [showPopover, setShowPopover] = useState(false)
-  const reactionIcons = [...new Set(message.reactions.map((r) => r.content))]
+  const reactionIcons = [...new Set(message.reactions.map((r) =>  ReactEmoji.emojify(r.content)))]
 
   const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
     onError: (err) => console.log(err),
@@ -51,7 +51,7 @@ export default function Message({ message }) {
                 key={reaction}
                 onClick={() => react(reaction)}
               >
-                {reaction}
+                {ReactEmoji.emojify(reaction)}
               </Button>
             ))}
           </Popover.Content>

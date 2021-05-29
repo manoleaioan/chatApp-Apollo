@@ -44,6 +44,7 @@ module.exports = {
 
         const recipient = await User.findOne({ where: { username: to } })
 
+
         if (!recipient) {
           throw new UserInputError('User not found')
         } else if (recipient.username === user.username) {
@@ -69,7 +70,8 @@ module.exports = {
       }
     },
     reactToMessage: async (_, { uuid, content }, { user, pubsub }) => {
-      const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎']
+      //const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎']
+      const reactions = ['<3', ':joy:', ':o', ':cry:', ':rage:', ':thumbsup:', ':thumbsdown:']
 
       try {
         // Validate reaction content
