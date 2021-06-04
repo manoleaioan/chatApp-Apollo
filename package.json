@@ -2,7 +2,10 @@
   "name": "chatApp-mysql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "engines": {
+    "node": "12.16.0",
+    "npm": "6.13.4"
+  },
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && nodemon server.js",
