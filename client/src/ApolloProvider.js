@@ -11,9 +11,9 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
 let httpLink = createHttpLink({
-  //uri: '/graphql/',
+  uri: '/graphql/',
   //uri: 'http://192.168.0.88:4000',
-  uri: 'https://mitest.glitch.me/graphql'
+  //uri: 'https://mitest.glitch.me/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -30,9 +30,9 @@ const authLink = setContext((_, { headers }) => {
 
 httpLink = authLink.concat(httpLink)
 
-//const host = window.location.host
+const host = window.location.host
 //const host = "192.168.0.88:4000"
-const host = "mitest.glitch.me"
+//const host = "mitest.glitch.me"
 
 const wsLink = new WebSocketLink({
   uri: `wss://${host}`,
