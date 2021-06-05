@@ -15,12 +15,32 @@ const server = new ApolloServer({
   subscriptions: { path: '/' },
 })
 
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+if (process.env.NODE_ENV != 'production') require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+
+app.use(cors());
+
+if (process.env.NODE_ENV == 'production'){
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  app.get('*', function(req, res){
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 server.applyMiddleware({
-  path: '/client'
+  path: '/client',
+  app
 })
 
-server.listen(process.env.PORT).then(({ url, subscriptionsUrl }) => {
+app.listen(port).then(({ url, subscriptionsUrl }) => {
   console.log(`🚀 Server ready at ${url}`)
   console.log(`🚀 Susbscription ready at ${subscriptionsUrl}`)
 
