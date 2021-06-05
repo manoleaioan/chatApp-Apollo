@@ -1,5 +1,5 @@
 const { ApolloServer } = require('apollo-server-express')
-
+const { createServer } =  require('http')
 require('dotenv').config()
 
 const { sequelize } = require('./models')
@@ -15,9 +15,9 @@ const path = require('path');
 if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
-const server = new ApolloServer({
+const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   context: contextMiddleware,
@@ -34,12 +34,17 @@ if (process.env.NODE_ENV == 'production'){
   });
 }
 
-server.applyMiddleware({
+apollo.applyMiddleware({
   app
 })
 
-app.listen(port, () => {
-  console.log(`🚀 Server ready at ${server.graphqlPath}`)
+const httpServer = createServer(app)
+apollo.installSubscriptionHandlers(httpServer)
+
+
+app.listen(PORT, () => {
+  console.log(`server ready at http://localhost:${PORT}${apollo.graphqlPath}`)
+  console.log(`Subscriptions ready at ws://localhost:${PORT}${apollo.subscriptionsPath}`)
   sequelize
     .authenticate()
     .then(() => console.log('Database connected!!'))
