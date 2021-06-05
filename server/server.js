@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer } = require('apollo-server-express')
 
 require('dotenv').config()
 
@@ -36,14 +36,11 @@ if (process.env.NODE_ENV == 'production'){
 }
 
 server.applyMiddleware({
-  path: '/client',
   app
 })
 
-app.listen(port).then(({ url, subscriptionsUrl }) => {
-  console.log(`🚀 Server ready at ${url}`)
-  console.log(`🚀 Susbscription ready at ${subscriptionsUrl}`)
-
+app.listen(port, () => {
+  console.log(`🚀 Server ready at ${server.graphqlPath}`)
   sequelize
     .authenticate()
     .then(() => console.log('Database connected!!'))
