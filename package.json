@@ -14,7 +14,7 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "cd server && node server.js"
   },
-  "heroku-postbuild": "cd client && npm install --only=dev --no-shrinkwrap && npm run build",
+  "heroku-postbuild": "cd client && npm install && cd server && npm install",
   "cacheDirectories": [
     "server/node_modules",
     "client/node_modules"
