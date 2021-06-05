@@ -21,7 +21,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: contextMiddleware,
-  subscriptions: { path: '/' },
+  subscriptions: { path: '/subscriptions' },
 })
 
 app.use(cors());
