@@ -8,13 +8,6 @@ const resolvers = require('./graphql/resolvers')
 const typeDefs = require('./graphql/typeDefs')
 const contextMiddleware = require('./util/contextMiddleware')
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: contextMiddleware,
-  subscriptions: { path: '/' },
-})
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -22,8 +15,14 @@ const path = require('path');
 if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: contextMiddleware,
+  subscriptions: { path: '/' },
+})
 
 app.use(cors());
 
