@@ -42,7 +42,7 @@ const httpServer = createServer(app)
 apollo.installSubscriptionHandlers(httpServer)
 
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`server ready at http://localhost:${PORT}${apollo.graphqlPath}`)
   console.log(`Subscriptions ready at ws://localhost:${PORT}${apollo.subscriptionsPath}`)
   sequelize
