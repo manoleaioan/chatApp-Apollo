@@ -6,12 +6,22 @@
     "node": "12.16.0",
     "npm": "6.13.4"
   },
+  "main": "client/index.js",
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && nodemon server.js",
-    "build": "cd client && npm install && npm run build cd server && npm install",
+    "build": "cd client && npm run build",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "cd server && node server.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.24.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
   },
   "keywords": [],
   "author": "",
