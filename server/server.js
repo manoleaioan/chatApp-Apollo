@@ -15,6 +15,11 @@ const server = new ApolloServer({
   subscriptions: { path: '/' },
 })
 
+
+server.applyMiddleware({
+  path: '/client'
+})
+
 server.listen(process.env.PORT).then(({ url, subscriptionsUrl }) => {
   console.log(`🚀 Server ready at ${url}`)
   console.log(`🚀 Susbscription ready at ${subscriptionsUrl}`)
