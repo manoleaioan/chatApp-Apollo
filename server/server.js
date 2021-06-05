@@ -15,7 +15,7 @@ const server = new ApolloServer({
   subscriptions: { path: '/' },
 })
 
-server.listen().then(({ url, subscriptionsUrl }) => {
+server.listen(process.env.PORT).then(({ url, subscriptionsUrl }) => {
   console.log(`🚀 Server ready at ${url}`)
   console.log(`🚀 Susbscription ready at ${subscriptionsUrl}`)
 

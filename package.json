@@ -24,7 +24,7 @@
   },
   "heroku-postbuild": "cd client && npm install",
   "cacheDirectories": [
-    "server/node_modules",
+    "node_modules",
     "client/node_modules"
   ],
   "keywords": [],
