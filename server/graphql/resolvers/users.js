@@ -124,7 +124,7 @@ module.exports = {
 
         // Create user
         const user = await User.create({
-          username,
+          username: username.toLowerCase(),
           email,
           password,
         })
