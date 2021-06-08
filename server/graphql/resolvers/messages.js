@@ -152,5 +152,24 @@ module.exports = {
         }
       ),
     },
+
+    newUser: {
+      subscribe: withFilter(
+        (_, __, { pubsub, user }) => {
+          if (!user) throw new AuthenticationError('Unauthenticated')
+          return pubsub.asyncIterator('NEW_USER')
+        },
+        ({ newUser }, _, { user }) => {
+
+          if (
+            newUser.username !== user.username
+          ) {
+            return true
+          }
+
+          return false
+        }
+      ),
+    },
   },
 }

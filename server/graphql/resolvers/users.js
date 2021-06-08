@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { UserInputError, AuthenticationError, ForbiddenError } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError, withFilter } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
 
@@ -69,7 +69,7 @@ module.exports = {
           where: { username },
         })
 
-    
+
         if (!user) {
           errors.username = 'user not found'
           throw new UserInputError('user not found', { errors })
@@ -82,7 +82,7 @@ module.exports = {
           throw new UserInputError('password is incorrect', { errors })
         }
 
-        const token = jwt.sign({ username:username.toLowerCase() }, process.env.JWT_SECRET,{
+        const token = jwt.sign({ username: username.toLowerCase() }, process.env.JWT_SECRET, {
           expiresIn: 60 * 60,
         })
 
@@ -98,7 +98,7 @@ module.exports = {
   },
 
   Mutation: {
-    register: async (_, args) => {
+    register: async (_, args, { pubsub }) => {
       let { username, email, password, confirmPassword } = args
       let errors = {}
 
@@ -129,6 +129,8 @@ module.exports = {
           password,
         })
 
+        pubsub.publish('NEW_USER', { newUser: {username, email, createdAt: user.createdAt} })
+
         // Return user
         return user
       } catch (err) {
@@ -144,9 +146,8 @@ module.exports = {
       }
     },
 
-    updateUserProfile: async (_, { imageUrl }, { user }) => {
+    updateUserProfile: async (_, { imageUrl }, { user, pubsub }) => {
       try {
-       // console.log(user);
         if (!user) throw new AuthenticationError('Unauthenticated')
 
         let userData = await User.findOne({
@@ -156,6 +157,9 @@ module.exports = {
         userData.imageUrl = imageUrl
         userData.save()
 
+        
+        pubsub.publish('NEW_USER', { newUser: userData})
+
         return {
           ...userData.toJSON()
         }
@@ -163,6 +167,5 @@ module.exports = {
         console.log(err)
       }
     }
-
-  },
+  }
 }

@@ -101,6 +101,24 @@ const messageReducer = (state, action) => {
         users: usersCopy,
       }
 
+    case 'NEW_USER':
+      usersCopy = [...state.users]
+      let user = action.payload.userData.newUser
+
+      let uIndex = usersCopy.findIndex(
+        (u) => u.username === user.username
+      )
+
+      if (uIndex > -1) {
+        usersCopy[uIndex] = {...usersCopy[uIndex],...user}
+      } else {
+        usersCopy = [...usersCopy, user]
+      }
+
+      return {
+        ...state,
+        users: usersCopy
+      }
     default:
       throw new Error(`Unknown action type: ${action.type}`)
   }

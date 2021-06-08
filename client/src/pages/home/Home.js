@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react'
-import { Row, Button, Image } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import { gql, useSubscription, useQuery } from '@apollo/client'
 
 import { useAuthDispatch, useAuthState } from '../../context/auth'
@@ -33,6 +33,17 @@ const NEW_REACTION = gql`
     }
   }
 `
+
+const NEW_USER = gql`
+  subscription newUser {
+    newUser {
+      username
+      createdAt
+      imageUrl
+    }
+  }
+`
+
 const GET_USER_DATA = gql`
   query getUserData {
     getUserData {
@@ -61,6 +72,25 @@ export default function Home() {
   const { data: reactionData, error: reactionError } = useSubscription(
     NEW_REACTION
   )
+
+  const { data: userData, error: userError } = useSubscription(
+    NEW_USER
+  )
+
+  useEffect(() => {
+    if (userError) console.log(userError)
+
+    
+    if (userData) {
+      messageDispatch({
+        type: 'NEW_USER',
+        payload: {
+          userData
+        },
+      })
+    }
+  }, [userError, userData])
+  
 
   useEffect(() => {
     if (messageError) console.log(messageError)
@@ -99,6 +129,7 @@ export default function Home() {
     }
   }, [reactionError, reactionData])
 
+  
   return (
     <Fragment>
       <Row className="bg-white chat">
