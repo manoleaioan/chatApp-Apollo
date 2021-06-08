@@ -33,7 +33,7 @@ const host = window.location.host
 //onst host = "192.168.0.88:4000"
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${host}`,
+  uri: `wss://${host}`,
   options: {
     reconnect: true,
     connectionParams: {
