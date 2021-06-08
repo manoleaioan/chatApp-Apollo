@@ -129,7 +129,7 @@ module.exports = {
           password,
         })
 
-        pubsub.publish('NEW_USER', { newUser: {username, email, createdAt: user.createdAt} })
+        pubsub.publish('NEW_USER', { newUser: {username: username.toLowerCase(), email, createdAt: user.createdAt} })
 
         // Return user
         return user
