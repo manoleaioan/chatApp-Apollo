@@ -152,7 +152,6 @@ module.exports = {
         }
       ),
     },
-
     newUser: {
       subscribe: withFilter(
         (_, __, { pubsub, user }) => {
@@ -160,7 +159,6 @@ module.exports = {
           return pubsub.asyncIterator('NEW_USER')
         },
         ({ newUser }, _, { user }) => {
-
           if (
             newUser.username !== user.username
           ) {

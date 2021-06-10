@@ -40,6 +40,7 @@ const NEW_USER = gql`
       username
       createdAt
       imageUrl
+      isOnline
     }
   }
 `
@@ -50,6 +51,7 @@ const GET_USER_DATA = gql`
       username
       createdAt
       imageUrl
+      isOnline
     }
   }
 `
@@ -80,7 +82,6 @@ export default function Home() {
   useEffect(() => {
     if (userError) console.log(userError)
 
-    
     if (userData) {
       messageDispatch({
         type: 'NEW_USER',

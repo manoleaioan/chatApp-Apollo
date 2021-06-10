@@ -23,6 +23,11 @@ module.exports = {
         allowNull: false
       },
       imageUrl: Sequelize.STRING,
+      isOnline: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue:false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

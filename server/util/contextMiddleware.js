@@ -2,10 +2,13 @@ const jwt = require('jsonwebtoken')
 const { PubSub } = require('apollo-server')
 const pubsub = new PubSub()
 
+//const { pubsub } = require('./pub')
 
 
 module.exports = (context) => {
   let token
+  let { req, connection } = context
+
   if (context.req && context.req.headers.authorization) {
     token = context.req.headers.authorization.split('Bearer ')[1]
 
@@ -13,7 +16,7 @@ module.exports = (context) => {
     token = context.connection.context.Authorization.split('Bearer ')[1]
   }
 
-  if(token){ 
+  if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
       context.user = decodedToken
     })
@@ -21,5 +24,13 @@ module.exports = (context) => {
 
   context.pubsub = pubsub
 
+  if (connection) {
+    return {
+      ...connection.context,
+      pubsub
+    }
+  }
   return context
 }
+
+module.exports.pubsub = pubsub

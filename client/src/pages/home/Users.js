@@ -13,6 +13,7 @@ const GET_USERS = gql`
       username
       createdAt
       imageUrl
+      isOnline
       latestMessage {
         uuid
         from
@@ -30,6 +31,7 @@ const UPDATE_USER_PROFILE_PICTURE = gql`
       username
       createdAt
       imageUrl
+      isOnline
     }
   }
 `
@@ -79,7 +81,8 @@ export default function Users() {
         <Image
           src={user.imageUrl || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
           className="user-image"
-        />
+        />    
+        <div className={classNames('status',{'active':user.isOnline})}></div>
         <div className="d-none d-md-block ml-2">
           <p className="text-success users-name">{user.username}</p>
           <p className="font-weight-light">

@@ -12,8 +12,9 @@ module.exports = {
         if (!user) throw new AuthenticationError('Unauthenticated')
 
         let users = await User.findAll({
-          attributes: ['username', 'imageUrl', 'createdAt'],
+          attributes: ['username', 'imageUrl', 'createdAt', 'isOnline'],
           where: { username: { [Op.ne]: user.username } },
+          //order: [['isOnline', 'DESC']],
         })
 
         const allUserMessages = await Message.findAll({
@@ -31,7 +32,6 @@ module.exports = {
           otherUser.latestMessage = latestMessage
           return otherUser
         })
-
         return users
       } catch (err) {
         console.log(err)
@@ -40,9 +40,10 @@ module.exports = {
     },
 
     getUserData: async (_, __, { user }) => {
+      if (!user) throw new AuthenticationError('Unauthenticated')
       try {
         let userData = await User.findOne({
-          attributes: ['username', 'imageUrl', 'createdAt'],
+          attributes: ['username', 'imageUrl', 'createdAt', 'isOnline'],
           where: { username: user.username },
         })
 
@@ -129,7 +130,7 @@ module.exports = {
           password,
         })
 
-        pubsub.publish('NEW_USER', { newUser: {username: username.toLowerCase(), email, createdAt: user.createdAt} })
+        pubsub.publish('NEW_USER', { newUser: { username: username.toLowerCase(), email, createdAt: user.createdAt } })
 
         // Return user
         return user
@@ -146,19 +147,22 @@ module.exports = {
       }
     },
 
-    updateUserProfile: async (_, { imageUrl }, { user, pubsub }) => {
+    updateUserProfile: async (_, fields, { user, pubsub }) => {
       try {
         if (!user) throw new AuthenticationError('Unauthenticated')
 
         let userData = await User.findOne({
           where: { username: user.username },
+          attributes: ['username', 'imageUrl', 'createdAt', 'isOnline', 'id']
         })
 
-        userData.imageUrl = imageUrl
+        for (var key of Object.keys(fields)) {
+          userData[key] = fields[key]
+        }
+
         userData.save()
 
-        
-        pubsub.publish('NEW_USER', { newUser: userData})
+        pubsub.publish('NEW_USER', { newUser: userData })
 
         return {
           ...userData.toJSON()

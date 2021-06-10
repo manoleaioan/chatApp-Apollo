@@ -10,7 +10,7 @@ const messageReducer = (state, action) => {
     case 'SET_USERS':
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.slice().sort((a, b) => a.isOnline > b.isOnline && -1 || 1)
       }
     case 'SET_USER_MESSAGES':
       usersCopy = [...state.users]
@@ -96,6 +96,7 @@ const messageReducer = (state, action) => {
         usersCopy[userIndex] = userCopy
       }
 
+
       return {
         ...state,
         users: usersCopy,
@@ -117,7 +118,7 @@ const messageReducer = (state, action) => {
 
       return {
         ...state,
-        users: usersCopy
+        users: usersCopy.slice().sort((a, b) => a.isOnline > b.isOnline && -1 || 1)
       }
     default:
       throw new Error(`Unknown action type: ${action.type}`)
