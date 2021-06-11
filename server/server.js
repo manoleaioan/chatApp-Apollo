@@ -19,7 +19,6 @@ const PORT = process.env.PORT || 4000;
 const { pubsub } = contextMiddleware
 
 const appInit = function () {
-
   User.update(
     { isOnline: false },
     { where: { isOnline: true } }
@@ -38,6 +37,7 @@ const apollo = new ApolloServer({
         const accessToken = connectionParams['Authorization'].split('Bearer ')[1]
 
         try {
+     
           let username = jwt.verify(accessToken, process.env.JWT_SECRET).username
 
           let user = await User.findOne({

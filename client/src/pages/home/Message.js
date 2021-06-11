@@ -22,7 +22,7 @@ export default function Message({ message }) {
   const sent = message.from === user.username
   const received = !sent
   const [showPopover, setShowPopover] = useState(false)
-  const reactionIcons = [...new Set(message.reactions.map((r) =>  ReactEmoji.emojify(r.content)))]
+  const reactionIcons = [...new Set(message.reactions.map((r) => ReactEmoji.emojify(r.content)))]
 
   const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
     onError: (err) => console.log(err),
@@ -58,7 +58,7 @@ export default function Message({ message }) {
         </Popover>
       }
     >
-      <Button variant="link" className="px-2">
+      <Button variant="link" className="px-2 react-btn">
         <i className="far fa-smile"></i>
       </Button>
     </OverlayTrigger>
@@ -66,11 +66,12 @@ export default function Message({ message }) {
 
   return (
     <div
-      className={classNames('d-flex my-3', {
+      className={classNames('my-3 msg', {
         'ml-auto': sent,
         'mr-auto': received,
       })}
     >
+      <div className="d-flex">
       {sent && reactButton}
       <OverlayTrigger
         placement={sent ? 'right' : 'left'}
@@ -82,22 +83,28 @@ export default function Message({ message }) {
         transition={false}
       >
         <div
-          className={classNames('py-2 px-3 rounded-pill position-relative', {
+          className={classNames('py-2 px-3 rounded-pill position-relative text', {
             'bg-primary': sent,
             'bg-secondary': received,
           })}
         >
-          {message.reactions.length > 0 && (
-            <div className="reactions-div bg-secondary p-1 rounded-pill">
-              {reactionIcons} {message.reactions.length}
-            </div>
-          )}
+
           <p className={classNames({ 'text-white': sent })} key={message.uuid}>
             {ReactEmoji.emojify(message.content)}
           </p>
         </div>
+
+  
       </OverlayTrigger>
       {received && reactButton}
+      </div>
+      {
+          message.reactions.length > 0 && (
+            <div className={classNames('reactions-div bg-secondary p-1 rounded-pill', {'reactions-left':received})}>
+              {reactionIcons} {message.reactions.length}
+            </div>
+          )
+        }
     </div>
   )
 }

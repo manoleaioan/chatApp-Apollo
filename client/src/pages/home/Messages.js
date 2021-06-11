@@ -105,13 +105,13 @@ export default function Messages() {
   }
 
   return (
-    <Col xs={10} md={8} className="p-0">
+    <Col xs={10} md={8} className="p-0 msg-area">
       <div className="messages-box d-flex flex-column-reverse p-3">
         {selectedChatMarkup}
       </div>
       <div className="px-3 py-2">
         <Form onSubmit={submitMessage}>
-          <Form.Group className="d-flex align-items-center m-0">
+          <Form.Group className="d-flex align-items-center m-0 input-area">
             <Form.Control
               type="text"
               className="message-input rounded-pill p-4 bg-secondary border-0"
@@ -120,7 +120,7 @@ export default function Messages() {
               onChange={(e) => setContent(e.target.value)}
             />
             <i
-              className="fas fa-paper-plane fa-2x text-primary ml-2"
+              className="fas fa-paper-plane fa-2x text-primary ml-2 p-2"
               onClick={submitMessage}
               role="button"
             ></i>

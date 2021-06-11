@@ -12,7 +12,7 @@ import { getMainDefinition } from '@apollo/client/utilities'
 
 let httpLink = createHttpLink({
   uri: '/graphql/',
-  //uri: 'http://192.168.0.88:4000/graphql'
+ // uri: 'http://192.168.0.88:4000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {

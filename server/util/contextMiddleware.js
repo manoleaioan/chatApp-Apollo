@@ -2,9 +2,6 @@ const jwt = require('jsonwebtoken')
 const { PubSub } = require('apollo-server')
 const pubsub = new PubSub()
 
-//const { pubsub } = require('./pub')
-
-
 module.exports = (context) => {
   let token
   let { req, connection } = context
@@ -23,7 +20,6 @@ module.exports = (context) => {
   }
 
   context.pubsub = pubsub
-
   if (connection) {
     return {
       ...connection.context,

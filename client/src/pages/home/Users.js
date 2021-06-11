@@ -84,7 +84,7 @@ export default function Users() {
         />    
         <div className={classNames('status',{'active':user.isOnline})}></div>
         <div className="d-none d-md-block ml-2">
-          <p className="text-success users-name">{user.username}</p>
+          <p className="users-name">{user.username}</p>
           <p className="font-weight-light">
             {user.latestMessage
               ? ReactEmoji.emojify(user.latestMessage.content)
